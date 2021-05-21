@@ -1,6 +1,7 @@
 package fastcampus.aop.part4.chapter06.data
 
 import fastcampus.aop.part4.chapter06.BuildConfig
+import fastcampus.aop.part4.chapter06.data.models.airquality.MeasuredValue
 import fastcampus.aop.part4.chapter06.data.models.monitoringstation.MonitoringStation
 import fastcampus.aop.part4.chapter06.data.services.AirKoreaApiService
 import fastcampus.aop.part4.chapter06.data.services.KakaoLocalApiService
@@ -34,6 +35,15 @@ object Repository {
         }
         return null
     }
+
+    suspend fun getLatestAirQualityData(stationName: String): MeasuredValue? =
+        airKoreaApiService
+            .getRealtimeAirQualties(stationName)
+            .body()
+            ?.response
+            ?.body
+            ?.measuredValues
+            ?.firstOrNull()
 
 
     private val kakaoLocalApiService: KakaoLocalApiService by lazy {
